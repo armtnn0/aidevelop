@@ -17,7 +17,7 @@ class ImageController extends Controller
         Log::info('Received prompt: ' . $prompt);
 
         try {
-            $response = Http::post('https://741c-34-87-160-169.ngrok-free.app/generate', [
+            $response = Http::post('https://8fb7-34-125-234-236.ngrok-free.app/generate', [
                 'prompt' => $prompt,
             ]);
             Log::info('API response: ' . $response->body());
