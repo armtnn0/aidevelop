@@ -1,12 +1,16 @@
 {
-    "regions": [
-        "hnd1"
-    ],
+
     "version": 2,
     "builds": [
         {
             "src": "api/index.php",
-            "use": "vercel-php@0.5.2"
+            "use": "vercel-php@0.5.2",
+            "config": {
+                "includeFiles": [
+                  "libssl.so.10",
+                  "libcrypto.so.10"
+                ]
+              }
         },
         {
             "src": "public/**",
