@@ -17,8 +17,9 @@ class ImageController extends Controller
         Log::info('Received prompt: ' . $prompt);
 
         try {
-            $response = Http::post('https://8fb7-34-125-234-236.ngrok-free.app/generate', [
+            $response = Http::post('https://5fb8-34-143-170-232.ngrok-free.app/generate', [
                 'prompt' => $prompt,
+                'negative_prompt' => 'nsfw,text,watermark,bad hands,extra digit,fewer digits',
             ]);
             Log::info('API response: ' . $response->body());
 
@@ -28,12 +29,21 @@ class ImageController extends Controller
             }
 
             $data = $response->json();
+            Log::info('Response data: ' . json_encode($data)); // APIレスポンス全体をログに記録
+
+            if (!isset($data['image'])) {
+                Log::error('image key not found in the response');
+                return response()->json(['error' => 'image key not found in the response'], 500);
+            }
+
             $imageData = base64_decode($data['image']);
             $imageName = 'generated_image.png';
             $path = public_path('images/' . $imageName);
             if (!file_exists(dirname($path))) {
                 mkdir(dirname($path), 0777, true);
             }
+
+            // デコードした画像データをファイルに保存
             file_put_contents($path, $imageData);
             Log::info('Image saved at: ' . $path);
 
